@@ -12,10 +12,10 @@ Upload profile/resume , View and apply for jobs
 ### Admin:
 Manage job postings, Edit & remove profiles
 ### Team Members and roles:
-Saumya Shah -  Front end and documentation
-Khusboo Saraf - Front end and Meeting organizer 
-Payal Raj Chaudhary - Front end and documentation
-Devanshi Patel -  Backend and user stories
-Priyanshi Patel - Backend  and MoM
-Imad Altaf -  Backend and MoM
+1. Saumya Shah -  Front end and documentation
+2. Khusboo Saraf - Front end and Meeting organizer 
+3. Payal Raj Chaudhary - Front end and documentation
+4. Devanshi Patel -  Backend and user stories
+5. Priyanshi Patel - Backend  and MoM
+6. Imad Altaf -  Backend and MoM
 
