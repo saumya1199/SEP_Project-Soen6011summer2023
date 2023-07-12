@@ -18,4 +18,12 @@ Manage job postings, Edit & remove profiles
 4. Devanshi Patel -  Backend and user stories
 5. Priyanshi Patel - Backend  and MoM
 6. Imad Altaf -  Backend and MoM
+### Frameworks used:
+Vue.js (Front end)
+Firebase (Back end)
+Node.js (Server)
+### Programming Languages used:
+Html / Css
+Javascript
+JSX
 
