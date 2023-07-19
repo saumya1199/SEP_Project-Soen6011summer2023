@@ -22,6 +22,17 @@ The application will have three roles:
 - Manage job postings
 - Edit & remove profiles
 
+## Team Members and Roles
+|Student ID| Name | Role | Strengths |
+|:---------:|:---------:|:---------:|:---------:|
+|40167279|Saumya Shah| Project Manager/ Frontend Developer | HTML, Vue.js, CSS |
+|40204421|Khusboo Saraf| Quality Manager/ Frontend Developer and Meeting organizer | Javascript, Vue.js, Jsx |
+|40194488|Payal Raj Chaudhary | Scrum Master/ Frontend Developer | Javascript, Vue.js, Jsx |
+|40172139|Devanshi Patel| Release Manager/ Backend Developer and User stories Developer| Node.js, Firebase  |
+|40196772|Priyanshi Patel| Design Manager/ Backend Developer and MOM | Node.js, Firebase  |
+|40170775|Imad Altaf| Implementation Manager/ Backend Developer | Node.js, Firebase |
+
+<!---
 ### Team Members and Roles:
 1. Saumya Shah - Front end and documentation
 2. Khusboo Saraf - Front end and Meeting organizer
@@ -29,7 +40,7 @@ The application will have three roles:
 4. Devanshi Patel - Backend and user stories
 5. Priyanshi Patel - Backend and MoM
 6. Imad Altaf - Backend and MoM
-
+--->
 ### Frameworks used:
 
 #### Vue.js:
