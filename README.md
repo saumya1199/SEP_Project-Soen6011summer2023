@@ -1,5 +1,18 @@
 # SEP_Project-Soen6011summer2023 
-# Career Services Application
+# Career Services Application  
+
+## Table of Contents
+<!--ts-->
+   * [GitHub Link](#github-link)
+   * [Description of the Project](#project-description)
+   * [Team Members and Roles](#team-members-and-roles)
+   * [Project Approach](#project-approach)
+   * [Frameworks Used](#frameworks-used)
+   * [Programming langusges used](#programming-langusges-used)
+   * [IDEs](#ides)
+   * [Conclusion](#conclusion)
+<!--te-->
+
 ## GitHub Link:
 GitHub repository: [https://github.com/saurabhs679/AgileMinds-Soen6011summer2023.git  ](https://github.com/saumya1199/SEP_Project-Soen6011summer2023)  
 GitHub wiki: [https://github.com/saurabhs679/AgileMinds-Soen6011summer2023/wiki  ](https://github.com/saumya1199/SEP_Project-Soen6011summer2023/wiki)
@@ -69,4 +82,7 @@ JSX, in conjunction with Vue.js, will allow us to define the structure and layou
 ## IDEs:
 As for the IDE, we will choose a suitable option like Visual Studio Code (VS Code), WebStorm, or Atom to develop the career services platform. These IDEs provide powerful features, including code editing, debugging tools, version control integration, and extensions, making the development process more efficient and productive.
 
-Overall, by utilizing these frameworks and technologies, we will create a career services platform that provides a seamless user experience, efficient data management, and effective communication between employers and job seekers.
+Overall, by utilizing these frameworks and technologies, we will create a career services platform that provides a seamless user experience, efficient data management, and effective communication between employers and job seekers.  
+
+## Conclusion:
+The career services platform offers a complete solution for individuals seeking employment and businesses looking to streamline their hiring procedures. With its intuitive interface and extensive features, this platform aims to transform the job search process for students while enabling employers to easily identify and engage with exceptional candidates. By harnessing the capabilities of the internet and contemporary technologies, this platform empowers users to navigate the job market effortlessly and effectively.
