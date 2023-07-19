@@ -41,29 +41,32 @@ The application will have three roles:
 5. Priyanshi Patel - Backend and MoM
 6. Imad Altaf - Backend and MoM
 --->
-### Frameworks used:
+## Project Approach:
+The project will follow an agile methodology, which is an iterative and incremental approach that emphasizes flexibility, collaboration, continuous feedback, and adaptive planning. It will help the team promote a flexible and collaborative approach, allowing them to respond quickly to changes and deliver value iteratively.
 
-#### Vue.js:
+## Frameworks used:
+
+### Vue.js:
 In our project, we will be utilizing Vue.js as the frontend framework to build the user interface of the career services platform. We will leverage Vue.js's component-based architecture to create modular and reusable UI components such as job listings, candidate profiles, and application forms. Vue.js will enable us to handle dynamic data binding, efficiently update the UI, and provide seamless user interactions.
 
-#### Firebase:
+### Firebase:
 For the backend, we will be leveraging Firebase, which offers a range of services to support our career services platform. We will utilize Firebase's real-time database to store and retrieve job postings, candidate profiles, and application data. The authentication service will enable secure user registration and login functionality, ensuring that only authorized users can access the platform. Additionally, Firebase's hosting service will allow us to deploy and host our application, making it accessible to users over the internet.
 
-#### Node.js:
+### Node.js:
 Node.js will be utilized as the server-side technology to handle API requests and perform server-side operations. It will facilitate communication between the frontend and the backend, allowing seamless data exchange and ensuring a smooth user experience. Node.js offers scalability, efficiency, and a vast ecosystem of modules and libraries, making it a suitable choice for our project.
 
-### Programming langusges used: 
+## Programming langusges used: 
 
-#### HTML/CSS:
+### HTML/CSS:
 HTML/CSS will be used to structure and style the web pages of our career services platform. HTML will define the content and structure of the pages, while CSS will handle the visual design, layout, and responsiveness. These technologies will ensure a visually appealing and user-friendly interface, enhancing the overall user experience.
 
-#### JavaScript:
+### JavaScript:
 JavaScript, being a core component of web development, will play a crucial role in our project. We will use JavaScript to handle client-side interactivity, such as form validations, user input processing, and real-time updates. It will also enable us to make API requests to the backend, retrieve data, and update the UI accordingly.
 
-#### JSX:
+### JSX:
 JSX, in conjunction with Vue.js, will allow us to define the structure and layout of UI components in a more concise and intuitive manner. JSX's HTML-like syntax within JavaScript will enhance the development process, enabling us to create reusable and easily maintainable UI components.
 
-### IDEs:
+## IDEs:
 As for the IDE, we will choose a suitable option like Visual Studio Code (VS Code), WebStorm, or Atom to develop the career services platform. These IDEs provide powerful features, including code editing, debugging tools, version control integration, and extensions, making the development process more efficient and productive.
 
 Overall, by utilizing these frameworks and technologies, we will create a career services platform that provides a seamless user experience, efficient data management, and effective communication between employers and job seekers.
