@@ -1,5 +1,5 @@
 # SEP_Project-Soen6011summer2023 
-# Career Services Application  
+# Career Services Application(Quick Jobs) 
 
 ## Table of Contents
 <!--ts-->
@@ -8,14 +8,14 @@
    * [Team Members and Roles](#team-members-and-roles)
    * [Project Approach](#project-approach)
    * [Frameworks Used](#frameworks-used)
-   * [Programming langusges used](#programming-langusges-used)
+   * [Programming languages used](#programming-langusges-used)
    * [IDEs](#ides)
    * [Conclusion](#conclusion)
 <!--te-->
 
 ## GitHub Link:
-GitHub repository: [https://github.com/saurabhs679/AgileMinds-Soen6011summer2023.git  ](https://github.com/saumya1199/SEP_Project-Soen6011summer2023)  
-GitHub wiki: [https://github.com/saurabhs679/AgileMinds-Soen6011summer2023/wiki  ](https://github.com/saumya1199/SEP_Project-Soen6011summer2023/wiki)
+GitHub repository: [https://github.com/saumya1199/SEP_Project-Soen6011summer2023.git  ](https://github.com/saumya1199/SEP_Project-Soen6011summer2023)  
+GitHub wiki: [https://github.com/saurabhs679/AgileMinds-Soen6011summer2023/wiki ](https://github.com/saumya1199/SEP_Project-Soen6011summer2023/wiki) ](https://github.com/saumya1199/SEP_Project-Soen6011summer2023/wiki)
 
 ## Project Description
 The objective of the project is to create a career services platform wherein employers can post job openings and students looking for work can showcase and update their portfolios. This platform makes it simple for both job seekers and companies to search for prospective matches. Furthermore, it enables candidates to customize their profiles to meet market demands and helps employers find competent candidates based on their requirements. The application will allow users to create an account using their email address and password to access the service from a computer or mobile device with an internet connection. The system ensures high security for login credentials to prevent unauthorized access. Additionally, employers will receive notifications when students apply to their job offers, and students are notified when they are called for an interview through the application.
