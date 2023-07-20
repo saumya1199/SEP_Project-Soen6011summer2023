@@ -1,113 +1,98 @@
-<template>  
+<template>
+  <div class="container mt-4">
+    <h2 class="title">Job Applications</h2>
     <div v-if="applications.length > 0">
-        <h2 class="title is-4">Job Postings</h2>      
-          <div v-for="posting in applications" :key="posting.id" class="card mb-1">          
-              <div class="card-content">
-                <div class="content">   
-                  <div class="columns is-mobile is-vcentered">    
-                    <div class="column"> 
-                      <p class="card-header-title">{{  posting.Title }}</p>            
-                      {{ posting.Description }}
-                      </div>                   
-                      <div class="column is-5 has-text-right">                       
-                          {{ posting.Status }}                                         
-                        <button v-if="posting.Status=='Pending'" class="button is-danger" v-on:click="DeleteApplication(posting.id)">
-                          Remove
-                        </button>                    
-                    </div> 
-                  </div>  
-                </div>
-              </div>          
-          </div>      
+      <div v-for="posting in applications" :key="posting.id" class="card mb-3">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-8">
+              <h5 class="card-title">{{ posting.Title }}</h5>
+              <p class="card-text">{{ posting.Description }}</p>
+            </div>
+            <div class="col-md-4 text-end">
+              <p class="fw-bold">{{ posting.Status }}</p>
+              <button
+                v-if="posting.Status === 'Pending'"
+                class="btn btn-danger"
+                v-on:click="deleteApplication(posting.id)"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+    <div v-else>
+      <p class="lead">No applications available.</p>
+    </div>
+  </div>
 </template>
-  
-  
-  <script>
-  import { ref } from 'vue'
-  import { db } from '@/main'
-  import { collection, addDoc, getDocs, query, where, deleteDoc, doc, getDoc } from 'firebase/firestore'
-  import { getAuth, reload } from "firebase/auth";
-  
-  export default {
-    
-    name: 'ViewApplication',
-    data() {
 
-      return {
-        title: '',
-        description: '',
-        applications: [],
-        jobPostings: [],
-        auth: null
-      }
+<script>
+import { ref } from 'vue';
+import { db } from '@/main';
+import { collection, getDocs, query, where, deleteDoc, doc } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
+
+export default {
+  name: 'ViewApplication',
+  data() {
+    return {
+      applications: [],
+      auth: null,
+    };
+  },
+  created() {
+    this.auth = getAuth();
+    this.getApplications();
+  },
+
+  methods: {
+    async getApplications() {
+      const postings = [];
+      const q = query(collection(db, 'applications'), where('Candidate', '==', this.auth.currentUser.email));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        postings.push({ id: doc.id, ...doc.data() });
+      });
+      this.applications = postings;
     },
-    created() {
 
-      // Get the user object from the promise returned by getAuth()
-      this.auth = getAuth();
-      this.getApplcations();
-      this.getJobPostings();
+    async deleteApplication(postingId) {
+      await deleteDoc(doc(db, 'applications', postingId));
+      alert('Application deleted successfully!');
+      this.getApplications();
     },
-  
-    methods: {  
+  },
+};
+</script>
 
-        // showTitle(Id){
-        //     foreach (job in this.jobPostings){
-        //         if(Id == job.id){
-        //             return job.title;
-        //         }
-        //     }
+<style scoped>
+.container {
+  max-width: 800px;
+}
 
-        // },
+.card {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
 
-        async getJobPostings() {
-        const postings = []
-        const q = query(collection(db, 'job_postings')
-       // , where('author', '==', this.auth.currentUser.email)
-        )
-        const querySnapshot = await getDocs(q)
-        querySnapshot.forEach((doc) => {
-          postings.push({ id: doc.id, ...doc.data() })
-        })
-        this.jobPostings = postings
-      },
-        
+.card-title {
+  font-size: 24px;
+}
 
-      async getApplcations() {
-        const postings = []
-        const q = query(collection(db, 'applications')
-        , where('Candidate', '==', this.auth.currentUser.email)
-        )
-        const querySnapshot = await getDocs(q)
-        querySnapshot.forEach((doc) => {
-          postings.push({ id: doc.id, ...doc.data() })
-        })
-        this.applications = postings
+.card-text {
+  font-size: 16px;
+}
 
-      },
+.btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
 
-      async DeleteApplication(postingId) {
-
-         await deleteDoc(doc(db,"applications",postingId));
-
-        alert('Application deleted successfully!');
-        location.reload();
-  }
-    }
-  }
-  </script>
-  
-  <style scoped>
-  .job-posting {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .delete-button {
-    margin-left: 10px;
-  }
-  </style>
-  
+.text-end {
+  text-align: end;
+}
+</style>

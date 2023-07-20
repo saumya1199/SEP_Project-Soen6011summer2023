@@ -1,32 +1,29 @@
 <template>
   <div v-if="applications.length > 0">
-    <h2 class="title is-4">Applications</h2>
-    <div v-for="posting in applications" :key="posting.id" class="card mb-3">
+    <h2 class="title">Applications</h2>
+    <div v-for="posting in applications" :key="posting.id" class="custom-card">
       <div class="card-content">
-        <div class="columns is-mobile is-vcentered">
-          <div class="column is-6">
+        <div class="custom-columns">
+          <div class="custom-column">
             <p class="candidate-email">Candidate email: {{ posting.Candidate }}</p>
             <div class="resume-download">
-              <button @click="getDownloadURL(posting)">View Resume</button>
-              <div v-if="downloadURL">
-                <a :href="downloadURL" target="_blank">View Resume</a>
-              </div>
+              <button @click="openResume(posting)">View Resume</button>
             </div>
-            <h4 class="card-header-title">{{ posting.Title }}</h4>
+            <h4 class="custom-card-header-title">{{ posting.Title }}</h4>
             <p>{{ posting.Description }}</p>
           </div>
-          <div class="column is-6 has-text-right">
+          <div class="custom-column has-text-right">
             <p class="status">{{ posting.Status }}</p>
             <button
               v-if="posting.Status === 'Pending'"
-              class="button is-danger deny-button"
+              class="custom-button deny-button"
               @click="denyApplication(posting.id)"
             >
               Deny
             </button>
             <button
               v-if="posting.Status === 'Pending'"
-              class="button is-success approve-button"
+              class="custom-button approve-button"
               @click="approveApplication(posting.id)"
             >
               Approve
@@ -40,6 +37,89 @@
     <p class="no-applications">No applications available.</p>
   </div>
 </template>
+
+
+<style scoped>
+/* Custom Styles */
+
+.custom-card {
+  background-color: #f0f0f0;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.custom-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.candidate-email {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.resume-download {
+  margin-bottom: 1rem;
+}
+
+.resume-download button {
+  background-color: #000; /* Change the background color to black */
+  color: #fff; /* Change the text color to white */
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.custom-button {
+  background-color: #000; /* Change the background color to black */
+  color: #fff; /* Change the text color to white */
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.deny-button {
+  background-color: #000; /* Change the background color to black */
+  color: #fff; /* Change the text color to white */
+  margin-right: 10px;
+}
+
+.approve-button {
+  background-color: #000; /* Change the background color to black */
+  color: #fff; /* Change the text color to white */
+  margin-left: 10px;
+}
+
+.status {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #28a745; /* Color for Approved status */
+}
+
+.status.pending {
+  color: #dc3545; /* Color for Pending status */
+}
+
+.no-applications {
+  font-size: 18px;
+  color: #666;
+  text-align: center;
+  margin-top: 1rem;
+}
+</style>
+
+
+
 
 <script>
 import { db } from "@/main";
@@ -62,7 +142,6 @@ export default {
       applications: [],
       jobPostings: [],
       auth: null,
-      downloadURL: null,
     };
   },
   created() {
@@ -108,13 +187,13 @@ export default {
       alert("Application approved successfully!");
       location.reload();
     },
-    getDownloadURL(posting) {
+    openResume(posting) {
       const storage = getStorage();
       const filePath = `resumes/${posting.Candidate}/resume.pdf`;
       const fileRef = ref(storage, filePath);
       getDownloadURL(fileRef)
         .then((url) => {
-          this.downloadURL = url;
+          window.open(url, '_blank'); // Open the resume in a new tab
         })
         .catch((error) => {
           console.error("Error retrieving download URL:", error);
@@ -124,68 +203,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.card {
-  background-color: #f8f8f8;
-  padding: 1rem;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
-}
-
-.card:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.title {
-  color: #333;
-  margin-bottom: 1rem;
-}
-
-.candidate-email {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.resume-download {
-  margin-bottom: 1rem;
-}
-
-.resume-download button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.resume-download a {
-  display: block;
-  margin-top: 0.5rem;
-  text-decoration: underline;
-  color: #007bff;
-}
-
-.deny-button {
-  margin-right: 10px;
-}
-
-.approve-button {
-  margin-left: 10px;
-}
-
-.status {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.no-applications {
-  font-size: 18px;
-  color: #666;
-  text-align: center;
-  margin-top: 1rem;
-}
-</style>
