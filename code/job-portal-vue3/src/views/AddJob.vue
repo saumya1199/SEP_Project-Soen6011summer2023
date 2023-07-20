@@ -1,70 +1,58 @@
 <template>
-  <div>
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">
-        <label class="label">Title</label>
+  <div class="container">
+    <div class="custom-box bg-light p-4 rounded">
+      <h2 class="custom-title h2">Add a Job</h2>
+
+      <div class="custom-field mb-3">
+        <label class="custom-label font-weight-bold">Title</label>
+        <div class="custom-control">
+          <input class="custom-input form-control" type="text" placeholder="Job Title" v-model="title">
+          <span class="custom-icon">
+            <i class="fas fa-user"></i>
+          </span>
+        </div>
       </div>
-      <div class="field-body">
-        <div class="field">
-          <p class="control is-expanded has-icons-left">
-            <input class="input" type="text" placeholder="Job Title" v-model="title">
-            <span class="icon is-small is-left">
-              <i class="fas fa-user"></i>
-            </span>
-          </p>
+
+      <div class="custom-field mb-3">
+        <label class="custom-label font-weight-bold">Description</label>
+        <div class="custom-control">
+          <textarea class="custom-textarea form-control" placeholder="Enter job description" v-model="description"></textarea>
+        </div>
+      </div>
+
+      <div class="custom-buttons">
+        <button v-if="editingJobId" class="custom-button btn btn-primary" @click="updateJobPosting">
+          Save Changes
+        </button>
+        <button v-else class="custom-button btn btn-primary" @click="saveJobPosting">
+          Add Job
+        </button>
+        <button class="custom-button btn btn-secondary" @click="clearForm">
+          Clear
+        </button>
+      </div>
+
+    </div>
+
+    <div v-if="jobPostings.length > 0" class="custom-job-postings mt-4">
+      <h2 class="custom-title h2">Job Postings</h2>
+      <div v-for="posting in jobPostings" :key="posting.id" class="custom-job-post bg-white p-3 rounded mb-3">
+        <div class="custom-job-title">
+          <p>{{ posting.title }}</p>
+        </div>
+        <div class="custom-job-description">
+          <p>{{ posting.description }}</p>
+        </div>
+        <div class="custom-job-actions">
+          <button @click="editJobPosting(posting.id)" class="custom-button btn btn-primary">
+            Edit
+          </button>
+          <button @click="deleteJobPosting(posting.id)" class="custom-button btn btn-danger">
+            Delete
+          </button>
         </div>
       </div>
     </div>
-
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">
-        <label class="label">Description</label>
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <div class="control">
-            <textarea class="textarea" placeholder="Enter job description" v-model="description"></textarea>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="field is-horizontal">
-      <div class="field-label">
-        <!-- Left empty for spacing -->
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <div class="control">
-            <button class="button is-primary" v-on:click="saveJobPosting">
-              Add Job
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div v-if="jobPostings.length > 0">
-      <h2 class="title is-4">Job Postings</h2>      
-        <div v-for="posting in jobPostings" :key="posting.id" class="card mb-1">          
-            <div class="card-content">
-              <div class="content">   
-                <div class="columns is-mobile is-vcentered">    
-                  <div class="column"> 
-                    <p class="card-header-title">{{ posting.title }}</p>            
-                    {{ posting.description }}
-                  </div>
-                    <div class="column is-5 has-text-right">
-                      <button class="button is-danger" v-on:click="deleteJobPosting(posting.id)">
-                        Delete
-                      </button>                    
-                  </div> 
-                </div>  
-              </div>
-            </div>          
-        </div>      
-    </div>
-
   </div>
 </template>
 
@@ -82,58 +70,93 @@ export default {
       title: '',
       description: '',
       jobPostings: [],
-      auth: null
+      auth: null,
+      editingJobId: null
     }
   },
   created() {
-    // Get the user object from the promise returned by getAuth()
     this.auth = getAuth();
     this.getJobPostings();
   },
 
   methods: {
     async saveJobPosting() {
-  if (!this.title || !this.description) {
-    alert('Please enter a title and description.')
-    return
-  }
-  
-  const docRef = await addDoc(collection(db, 'job_postings'), {
-    title: this.title,
-    description: this.description,
-    author: this.auth.currentUser.email
-  })
-  console.log('Document written with ID: ', docRef.id)
-  this.title = ''
-  this.description = ''
-  this.getJobPostings()
-},
+      if (!this.title || !this.description) {
+        alert('Please enter a title and description.')
+        return
+      }
 
+      const docRef = await addDoc(collection(db, 'job_postings'), {
+        title: this.title,
+        description: this.description,
+        author: this.auth.currentUser.email
+      });
+      console.log('Document written with ID: ', docRef.id);
+      this.title = '';
+      this.description = '';
+      this.getJobPostings();
+    },
 
     async getJobPostings() {
-      const postings = []
-      const q = query(collection(db, 'job_postings'), where('author', '==', this.auth.currentUser.email))
-      const querySnapshot = await getDocs(q)
+      const postings = [];
+      const q = query(collection(db, 'job_postings'), where('author', '==', this.auth.currentUser.email));
+      const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-        postings.push({ id: doc.id, ...doc.data() })
-      })
-      this.jobPostings = postings
+        postings.push({ id: doc.id, ...doc.data() });
+      });
+      this.jobPostings = postings;
     },
+
+    async editJobPosting(id) {
+      const docRef = doc(db, "job_postings", id);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        this.title = data.title;
+        this.description = data.description;
+        this.editingJobId = id;
+      } else {
+        console.log("No such document!");
+      }
+    },
+
+    async updateJobPosting() {
+      if (!this.title || !this.description) {
+        alert("Please enter a title and description.");
+        return;
+      }
+
+      const docRef = doc(db, "job_postings", this.editingJobId);
+      await updateDoc(docRef, {
+        title: this.title,
+        description: this.description,
+        author: this.auth.currentUser.email,
+      });
+
+      this.title = "";
+      this.description = "";
+      this.editingJobId = null;
+      this.getJobPostings();
+    },
+
     async deleteJobPosting(id) {
-  // Delete document in 'job_postings' collection
-  await deleteDoc(doc(db, "job_postings", id))
+      await deleteDoc(doc(db, "job_postings", id));
 
-// Delete document in 'applications' collection
-const q = query(collection(db, 'applications'), where('JobPostingId', '==', id))
-const querySnapshot = await getDocs(q)
-querySnapshot.forEach(async (appDoc) => {
-  await deleteDoc(doc(db, 'applications', appDoc.id))
-})
+      const q = query(collection(db, 'applications'), where('JobPostingId', '==', id));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async (appDoc) => {
+        await deleteDoc(doc(db, 'applications', appDoc.id));
+      });
 
-this.getJobPostings()
+      this.getJobPostings();
+    },
 
+    clearForm() {
+      this.title = '';
+      this.description = '';
+      this.editingJobId = null;
     }
   }
 }
 </script>
-

@@ -41,9 +41,9 @@ The application will have three roles:
 |40167279|Saumya Shah| Project Manager/ Frontend Developer | HTML, Vue.js, CSS |
 |40204421|Khushboo Saraf| Quality Manager/ Frontend Developer and Meeting organizer | Javascript, Vue.js, Jsx |
 |40194488|Payal Raj Chaudhary | Scrum Master/ Frontend Developer | Javascript, Vue.js, Jsx |
-|40172139|Devanshi Patel| Release Manager/ Backend Developer and User stories Developer| Node.js, Firebase  |
-|40196772|Priyanshi Patel| Design Manager/ Backend Developer and MOM | Node.js, Firebase  |
-|40170775|Imad Altaf| Implementation Manager/ Backend Developer | Node.js, Firebase |
+|40172139|Devanshi Patel| Release Manager/ Backend Developer and User stories Developer| Vue.js, Firebase  |
+|40196772|Priyanshi Patel| Design Manager/ Backend Developer and MOM | Vue.js, Firebase  |
+|40170775|Imad Altaf| Implementation Manager/ Backend Developer | Vue.js, Firebase |
 
 <!---
 ### Team Members and Roles:
