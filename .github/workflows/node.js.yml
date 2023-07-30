@@ -5,6 +5,9 @@ name: CI
 
 on:
   push:
+    paths-ignore:
+      - 'bootstrap/**'
+      - 'dist/**'
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
