@@ -27,9 +27,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: './code/job-portal-vue3/package-lock.json'
-    - working-directory: ./code/job-portal-vue3/
+    - name: Install dependencies
     - run: npm install
+      working-directory: ./code/job-portal-vue3/
     - run: npm run dev
+      working-directory: ./code/job-portal-vue3/
     - run: npm run build --if-present
+      working-directory: ./code/job-portal-vue3/
     
     # Run unit test npm run test:unit
