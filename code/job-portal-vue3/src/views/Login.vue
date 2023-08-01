@@ -121,7 +121,8 @@ export default {
       signInWithEmailAndPassword(getAuth(), email.value, password.value)
         .then((data) => {
           console.log("Successfully signed in!");
-          router.push('/');
+          // After successful login, check if the user is an admin
+          checkAdminStatus(email.value);
         })
         .catch((error) => {
           console.log(error.code);
@@ -144,6 +145,19 @@ export default {
           }
         });
     };
+
+    const checkAdminStatus = (email) => {
+      // You may need to fetch the admin_profiles collection here and check if the user's email is in the list of admins
+      // For simplicity, let's assume the admin email is "admin@example.com"
+      if (email === "adminuser@gmail.com") {
+        // Grant admin access and navigate to the admin dashboard
+        router.push('/AdminDashboard');
+      } else {
+        // For non-admin users, navigate to the regular user dashboard
+        router.push('/');
+      }
+    };
+
     return { email, password, errMsg, login };
   }
 };

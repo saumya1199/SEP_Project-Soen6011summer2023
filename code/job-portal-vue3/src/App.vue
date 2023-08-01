@@ -41,6 +41,10 @@
               <li v-if="isCandidate" class="nav-item">
                 <router-link to="/editCandidate" class="nav-link">Edit Candidate</router-link>
               </li>
+              <li v-if="isAdmin" class="nav-item">
+                 <router-link to="/AdminDashboard" class="nav-link">Admin Dashboard</router-link>
+              </li>
+              
             </ul>
           </div>
 
@@ -149,6 +153,7 @@ export default {
       isLoggedOut: false,
       isCandidate: false,
       isEmployer: false,
+      isAdmin: false,
     };
   },
   mounted() {
@@ -176,6 +181,16 @@ export default {
         } else {
           this.isCandidate = false;
         }
+
+        if (
+          (await getCountFromServer(
+            query(collection(db, "admin_profiles"), where(documentId(), "==", user.email))
+          )).data().count == 1
+        ) {
+          this.isAdmin = true;
+        } else {
+          this.isAdmin = false;
+        }
       }
     });
   },
@@ -185,6 +200,7 @@ export default {
       signOut(auth).then(() => {
         this.isCandidate = false;
         this.isEmployer = false;
+        this.isAdmin = false; 
         this.$router.push("/login");
       });
     },

@@ -10,6 +10,12 @@
           </p>
         </div>
       </div>
+      <!-- Add admin-specific content -->
+      <div v-if="isAdmin">
+        <!-- Your admin-specific content goes here -->
+        <p class="admin-content">Hello Administrator</p>
+        <!-- <p class="admin-content">This content is only visible to admins.</p> -->
+      </div>
     </div>
   </div>
 </template>
@@ -28,7 +34,8 @@ export default {
       plastName: '',
       auth: null,
       isCandidate: false,
-      isEmployer: false
+      isEmployer: false,
+      isAdmin: false
     };
   },
   created() {
@@ -59,16 +66,20 @@ export default {
     console.log('Error fetching user profile:', error);
   }
 },
-    async checkProfileType() {
+async checkProfileType() {
       try {
         const employerDocRef = doc(db, 'employer_profiles', this.auth.currentUser.email);
         const employerDocSnap = await getDoc(employerDocRef);
         this.isEmployer = employerDocSnap.exists();
+
+        const adminDocRef = doc(db, 'admin_profiles', this.auth.currentUser.email);
+        const adminDocSnap = await getDoc(adminDocRef);
+        this.isAdmin = adminDocSnap.exists();
       } catch (error) {
-        console.log('Error checking employer profile:', error);
+        console.log('Error checking profiles:', error);
       }
-      // Assuming only one of either candidate or employer profiles can exist for a user
-      this.isCandidate = !this.isEmployer;
+      // Assuming only one of either candidate, employer, or admin profiles can exist for a user
+      this.isCandidate = !this.isEmployer && !this.isAdmin;
     }
   }
 };
@@ -107,4 +118,12 @@ export default {
 .last-name {
   font-weight: bold;
 }
+
+.admin-content {
+  font-size: 40px; /* Adjust the font size to make it bigger */
+  font-weight: bold; /* Optionally, make the text bold */
+  color: #007bff; /* Optionally, change the text color */
+  margin-top: 20px; /* Optionally, add some top margin to separate it from the other content */
+}
+
 </style>

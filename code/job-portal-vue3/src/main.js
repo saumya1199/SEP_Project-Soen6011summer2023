@@ -6,6 +6,7 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from 'firebase/storage';
 import { getAuth } from "firebase/auth";
 import { onUnmounted } from "vue";
+import './background.css';
 
 
 
