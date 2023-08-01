@@ -36,3 +36,9 @@ jobs:
       working-directory: ./code/job-portal-vue3/
     
     # Run unit test npm run test:unit
+
+    - name: Deploy to Firebase
+      run: |
+        npm install -g firebase-tools
+        firebase deploy --token ${{ secrets.FIREBASE_TOKEN }} --project soen-6011-c40dd
+      working-directory: ./code/job-portal-vue3/
