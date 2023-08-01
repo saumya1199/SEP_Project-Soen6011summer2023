@@ -15,9 +15,14 @@
               <input class="form-control" type="text" v-bind:placeholder="plastName" v-model="lastName">
             </div>
             <div class="form-group">
+              <label for="lastName" class="form-label">Email</label>
+              <input class="form-control" type="text" v-bind:placeholder="pemail" v-model="email">
+            </div>
+            <div class="form-group">
               <label for="resume" class="form-label">Resume</label>
               <input class="form-control" type="file" ref="resumeInput" v-on:change="handleFileUpload">
             </div>
+            
 
             <div class="form-group text-center mt-4"> <!-- Added mt-4 (margin-top: 1rem) -->
               <button class="btn btn-primary" @click="saveProfile">Save</button>
@@ -37,72 +42,15 @@
       </div>
     </div>
   </section>
+
+  <!-- Add some space between the sections -->
+  <div style="height: 30px;"></div>
+
+  <!-- Add the ResumeBuilder component -->
+  <ResumeBuilder />
 </template>
 
-<!-- The rest of your script and styles remain unchanged -->
-
-
-
-<style scoped>
-/* The rest of your existing styles */
-
-/* Add border around the form */
-.form-border {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 1.5rem;
-  width: 80%;
-  margin: 0 auto;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
-}
-
-.form-border:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Style for the form labels */
-.form-label {
-  font-weight: bold;
-}
-
-/* Style for the Submit button */
-.btn-primary {
-  color: #fff;
-  background-color: #000; /* Change the background color to black */
-  border-color: #000; /* Change the border color to black */
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/* Style for the Details Updated Message */
-.alert-success {
-  color: #28a745;
-  background-color: #d4edda;
-  border-color: #c3e6cb;
-  padding: 0.75rem 1.5rem;
-  border-radius: 5px;
-  margin-top: 1rem;
-}
-
-/* Style for the Progress Bar */
-.progress {
-  height: 20px;
-  border-radius: 5px;
-  margin-top: 1rem;
-  overflow: hidden;
-}
-
-.progress-bar {
-  line-height: 20px;
-  color: #fff;
-  text-align: center;
-  background-color: #007bff;
-}
-</style>
-
+<!-- The rest of your script and style sections remain unchanged -->
 
 
 <script>
@@ -111,15 +59,21 @@ import { db } from '@/main';
 import { updateDoc, doc, getDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { getStorage, ref as storageRef, uploadBytesResumable } from 'firebase/storage';
+import ResumeBuilder from "@/views/ResumeBuilder.vue";
 
 export default {
   name: 'EditCandidate',
+  components: {
+    ResumeBuilder
+  },
   data() {
     return {
       firstName: '',
       lastName: '',
+      email: '',
       pfirstName: '',
       plastName: '',
+      pemail: '',
       auth: null,
       storage: null,
       isDetailsUpdated: false,
@@ -139,6 +93,7 @@ export default {
         const docSnap = await getDoc(docRef);
         this.pfirstName = docSnap.data().first_name;
         this.plastName = docSnap.data().last_name;
+        this.pemail = docSnap.data().email;
       } catch (error) {
         console.log('Error fetching user profile:', error);
       }
@@ -147,7 +102,8 @@ export default {
       const docRef = doc(db, 'candidate_profiles', this.auth.currentUser.email);
       await updateDoc(docRef, {
         'first_name': this.firstName,
-        'last_name': this.lastName
+        'last_name': this.lastName,
+        'email': this.email
       });
       console.log('success');
 
@@ -192,3 +148,64 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* The rest of your existing styles */
+
+/* Add border around the form */
+.form-border {
+  max-width: 600px; /* Adjust the width to match the maximum width of resume-builder */
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.form-border:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* Style for the form labels */
+.form-label {
+  font-weight: bold;
+}
+
+/* Style for the Submit button */
+.btn-primary {
+  color: #fff;
+  background-color: #000; /* Change the background color to black */
+  border-color: #000; /* Change the border color to black */
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Style for the Details Updated Message */
+.alert-success {
+  color: #28a745;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  margin-top: 1rem;
+}
+
+/* Style for the Progress Bar */
+.progress {
+  height: 20px;
+  border-radius: 5px;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.progress-bar {
+  line-height: 20px;
+  color: #fff;
+  text-align: center;
+  background-color: #007bff;
+}
+</style>
+
+
