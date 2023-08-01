@@ -1,6 +1,8 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
 name: CI
 
 on:
@@ -34,11 +36,12 @@ jobs:
       working-directory: ./code/job-portal-vue3/
     - run: npm run build --if-present
       working-directory: ./code/job-portal-vue3/
-    
+
     # Run unit test npm run test:unit
-   - name: Deploy to Firebase Hosting
-     uses: w9jds/firebase-action@v1.4.0
-     with:
-       args: deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }}
-     env:
-      FIREBASE_CLI_LOGIN: ${{ secrets.FIREBASE_CLI_LOGIN }}
+    - name: Deploy to Firebase Hosting
+      uses: w9jds/firebase-action@v1.4.0
+      with:
+        args: deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }}
+      env:
+        FIREBASE_CLI_LOGIN: ${{ secrets.FIREBASE_CLI_LOGIN }}
+
