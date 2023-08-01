@@ -1,7 +1,7 @@
 <template>
   <div class="section">
     <div class="container">
-      <h1 class="title">Welcome to Quick Jobs</h1>
+      <h1 class="title">Welcome to Quick Jobsssssss</h1>
 
       <div class="field">
         <div class="control">
