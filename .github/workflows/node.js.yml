@@ -8,9 +8,9 @@ on:
     paths-ignore:
       - 'bootstrap/**'
       - 'dist/**'
-    branches: [ "main" ]
+    branches: [ "testci" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "testci" ]
 
 jobs:
   build:
