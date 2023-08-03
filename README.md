@@ -94,5 +94,9 @@ As for the IDE, we will choose a suitable option like Visual Studio Code (VS Cod
 
 Overall, by utilizing these frameworks and technologies, we will create a career services platform that provides a seamless user experience, efficient data management, and effective communication between employers and job seekers.  
 
+## Continuous integration Setup
+![image](https://github.com/saumya1199/SEP_Project-Soen6011summer2023/blob/sprint3/Sprint%203/CI%20setup%201.jpg)
+![image](https://github.com/saumya1199/SEP_Project-Soen6011summer2023/blob/sprint3/Sprint%203/CI%20setup%202.jpg.png)
+
 ## Conclusion:
 The career services platform offers a complete solution for individuals seeking employment and businesses looking to streamline their hiring procedures. With its intuitive interface and extensive features, this platform aims to transform the job search process for students while enabling employers to easily identify and engage with exceptional candidates. By harnessing the capabilities of the internet and contemporary technologies, this platform empowers users to navigate the job market effortlessly and effectively.
