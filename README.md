@@ -5,6 +5,7 @@
 <!--ts-->
    * [GitHub Link](#github-link)
    * [Description of the Project](#project-description)
+   * [Additional Features](#additional-features)
    * [Team Members and Roles](#team-members-and-roles)
    * [Project Approach](#project-approach)
    * [Frameworks Used](#frameworks-used)
@@ -35,6 +36,14 @@ The application will have three roles:
 ### Admin:
 - Manage job postings
 - Edit & remove profiles
+
+## Additional Features
+### Career Guidance Specialists:  
+Experts in resume building, interview preparation, and career planning, they provide personalized virtual counselling sessions to students, helping them showcase their strengths, skills, and experiences. With their guidance, students will gain the confidence to excel in job interviews and make informed decisions about their future. Embrace the support of Career Advisors and unlock full potential for a successful and fulfilling career.  
+
+### Explore Limitless Networking Possibilities:  
+The system will include a range of exciting networking opportunities designed to empower job seekers. User profiles, messaging systems, and professional networking groups will facilitate connections with industry professionals, mentors, and potential employers. By leveraging these networking features, users can build meaningful relationships, gain insights from seasoned experts, and explore a world of endless career possibilities
+
 
 ## Team Members and Roles
 |Student ID| Name | Role | Strengths |
