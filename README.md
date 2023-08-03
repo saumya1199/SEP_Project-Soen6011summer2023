@@ -11,7 +11,7 @@
    * [Frameworks Used](#frameworks-used)
    * [Programming languages used](#programming-langusges-used)
    * [IDEs](#ides)
-   * [Continuous integration Setup](continuous-integration-setup)
+   * [Continuous integration Setup](#continuous-integration-setup)
    * [Conclusion](#conclusion)
 <!--te-->
 
