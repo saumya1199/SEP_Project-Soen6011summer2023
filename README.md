@@ -39,11 +39,11 @@ The application will have three roles:
 - Edit & remove profiles
 
 ## Additional Features
-### Career Guidance Specialists:  
-Experts in resume building, interview preparation, and career planning, they provide personalized virtual counselling sessions to students, helping them showcase their strengths, skills, and experiences. With their guidance, students will gain the confidence to excel in job interviews and make informed decisions about their future. Embrace the support of Career Advisors and unlock full potential for a successful and fulfilling career.  
+### Third Party Login:  
+Our project boasts an innovative and seamless third-party login functionality, integrating the power of Google authentication. This feature offers candidates and employers a swift and secure way to access our platform, eliminating the need for separate account creation. With a simple click, they can log in using their existing Google credentials, streamlining the onboarding process and enhancing user experience. Embracing the convenience of third-party login via Google, our project exemplifies modern user-centric design and cutting-edge technology. 
 
-### Explore Limitless Networking Possibilities:  
-The system will include a range of exciting networking opportunities designed to empower job seekers. User profiles, messaging systems, and professional networking groups will facilitate connections with industry professionals, mentors, and potential employers. By leveraging these networking features, users can build meaningful relationships, gain insights from seasoned experts, and explore a world of endless career possibilities
+### Job Search Filter:  
+Through a smart and intuitive job search bar, candidates can input relevant keywords, enabling them to swiftly filter and refine their job search results. This feature significantly streamlines the job hunting process, presenting candidates with tailored listings that match their aspirations. Using specific job titles, our search bar intelligently sifts through our extensive database, providing a customized and comprehensive job search experience.
 
 
 ## Team Members and Roles
