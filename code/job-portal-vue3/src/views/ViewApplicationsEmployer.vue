@@ -144,7 +144,7 @@ import { getStorage } from "firebase/storage";
 import sgMail from '@sendgrid/mail';
 import axios from 'axios';
 
-sgMail.setApiKey('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');
+sgMail.setApiKey('S');
 const backendUrl = 'http://localhost:3000';
 
 export default {
