@@ -12,12 +12,12 @@ import './background.css';
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAj0yLt9UbcxBGOJiJOpVtkYWmjifpe1gM",
-    authDomain: "soen-6011-c40dd.firebaseapp.com",
-    projectId: "soen-6011-c40dd",
-    storageBucket: "soen-6011-c40dd.appspot.com",
-    messagingSenderId: "34473007784",
-    appId: "1:34473007784:web:157100bd8aea52c3f0809d",
+    apiKey: "",
+    authDomain: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: "",
   //  measurementId: "G-NMC97HCK9Q"
   };
   
