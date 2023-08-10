@@ -22,12 +22,13 @@
               Deny
             </button>
             <button
-              v-if="posting.Status === 'Pending'"
-              class="custom-button approve-button"
-              @click="approveApplication(posting.id)"
-            >
-              Approve
-            </button>
+  v-if="posting.Status === 'Pending'"
+  class="custom-button interview-button"
+  @click="callForInterviewApplication(posting.id)"
+>
+  Call for Interview
+</button>
+
           </div>
         </div>
       </div>
@@ -116,6 +117,12 @@
   text-align: center;
   margin-top: 1rem;
 }
+.interview-button {
+  background-color: #007bff; /* Change the background color to blue */
+  color: #fff; /* Change the text color to white */
+  margin-left: 10px;
+}
+
 </style>
 
 
@@ -134,6 +141,11 @@ import {
 import { getAuth } from "firebase/auth";
 import { ref, getDownloadURL } from "firebase/storage";
 import { getStorage } from "firebase/storage";
+import sgMail from '@sendgrid/mail';
+import axios from 'axios';
+
+sgMail.setApiKey('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');
+const backendUrl = 'http://localhost:3000';
 
 export default {
   name: "ViewApplication",
@@ -179,14 +191,14 @@ export default {
       alert("Application denied successfully!");
       location.reload();
     },
-    async approveApplication(postingId) {
-      const docRef = doc(db, "applications", postingId);
-      await updateDoc(docRef, {
-        Status: "Approved",
-      });
-      alert("Application approved successfully!");
-      location.reload();
-    },
+    // async approveApplication(postingId) {
+    //   const docRef = doc(db, "applications", postingId);
+    //   await updateDoc(docRef, {
+    //     Status: "Approved",
+    //   });
+    //   alert("Application approved successfully!");
+    //   location.reload();
+    // },
     openResume(posting) {
       const storage = getStorage();
       const filePath = `resumes/${posting.Candidate}/resume.pdf`;
@@ -199,6 +211,120 @@ export default {
           console.error("Error retrieving download URL:", error);
         });
     },
+
+  //   async callForInterviewApplication(postingId) {
+  // const response = await axios.post(
+  //   'http://localhost:3000/send-email', // Your backend server URL
+  //   { candidateEmail: 'imadshawl@ymail.com' } // Sample data, replace with actual data
+  // );
+
+  // if (response.status === 200) {
+  //   console.log('Email sent successfully');
+  // } else {
+  //   console.error('Error sending email:', response.data);
+  // }
+
+  // Rest of your code
+// }
+
+
+async callForInterviewApplication(postingId) {
+  const docRef = doc(db, "applications", postingId);
+  await updateDoc(docRef, {
+    Status: "Interview",
+  });
+
+  // Retrieve the application details to get the candidate's email
+  const application = this.applications.find(app => app.id === postingId);
+  const candidateEmail = application.Candidate; // Candidate's email
+
+  try {
+    const response = await axios.post(
+      'http://localhost:3000/send-email', // Your backend server URL
+      { candidateEmail } // Use the candidate's email
+    );
+
+    if (response.status === 200) {
+      console.log('Email sent successfully');
+      // Update the application status in the UI
+      application.Status = "Interview";
+      // Show the success alert and update the button text
+      alert("Candidate called for an interview!");
+    } else {
+      console.error('Error sending email:', response.data);
+    }
+  } catch (error) {
+    console.error("Error sending interview invitation email:", error);
+  }
+
+  // Reload the applications list
+  await this.getApplications();
+},
+
+
+//     async callForInterviewApplication(postingId) {
+//       const docRef = doc(db, "applications", postingId);
+//       await updateDoc(docRef, {
+//         Status: "Interview",
+//       });
+
+//       // Retrieve the application details to get the candidate's email
+//       const application = this.applications.find(app => app.id === postingId);
+//       const candidateEmail = application.Candidate; // Candidate's email
+
+//       try {
+//         // Call the email sending function
+//         await this.sendInterviewEmail(candidateEmail);
+//         console.log("Interview invitation email sent successfully.");
+//       } catch (error) {
+//         console.error("Error sending interview invitation email:", error);
+//       }
+
+//       alert("Candidate called for an interview!");
+//       location.reload();
+//     },
+
+//     async sendInterviewEmail(candidateEmail) {
+//   const emailData = {
+//     personalizations: [
+//       {
+//         to: [{ email: candidateEmail }],
+//         subject: 'Interview Invitation',
+//       },
+//     ],
+//     from: { email: 'shawlimad93@gmail.com' },
+//     content: [{ type: 'text/plain', value: 'You have been invited for an interview.' }],
+//   };
+
+//   try {
+//     const response = await axios.post(
+//       'https://api.sendgrid.com/v3/mail/send',
+//       emailData,
+//       {
+//         headers: {
+//           Authorization: `Bearer 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`,
+//           'Content-Type': 'application/json',
+//         },
+//       }
+//     );
+
+//     if (response.status === 202) {
+//       console.log('Email sent successfully');
+//     } else {
+//       console.error('Error sending email:', response.data);
+//     }
+//   } catch (error) {
+//     console.error('Error sending email:', error);
+//   }
+// }
+
+
+
+
+
+
+    
+  
   },
 };
 </script>

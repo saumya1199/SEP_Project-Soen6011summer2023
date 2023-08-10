@@ -19,23 +19,18 @@
     <p class="candidate-email">Candidate email: {{ displayedCandidate.email }}</p>
     <p class="candidate-first-name">First Name: {{ displayedCandidate.first_name }}</p>
     <p class="candidate-last-name">Last Name: {{ displayedCandidate.last_name }}</p>
+    <button class="btn-delete" @click="deleteCandidateProfile(displayedCandidate.email)">Delete</button>
+
     <!-- Additional candidate profile details can be displayed here -->
   </div>
+  
 </div>
 
       </div>
       <div v-else>
         <p class="section-empty">No candidate profiles available.</p>
       </div>
-      <!-- <div class="add-profile">
-        <h4>Add New Candidate Profile</h4>
-        <div>
-          <input type="text" v-model="newCandidate.email" placeholder="Email">
-          <input type="text" v-model="newCandidate.first_name" placeholder="First Name">
-          <input type="text" v-model="newCandidate.last_name" placeholder="Last Name">
-          <button class="btn-add" @click="addCandidateProfile">Add</button>
-        </div>
-      </div> -->
+     
     </section>
 
     <!-- Employer Profiles Management -->
@@ -55,6 +50,7 @@
     <p class="employer-first-name">First Name: {{ displayedEmployer.first_name }}</p>
     <p class="employer-last-name">Last Name: {{ displayedEmployer.last_name }}</p>
     <!-- Additional employer profile details can be displayed here -->
+    <button class="btn-delete" @click="deleteEmployerProfile(displayedEmployer.company_name)">Delete</button>
   </div>
 </div>
 
@@ -62,15 +58,24 @@
       <div v-else>
         <p class="section-empty">No employer profiles available.</p>
       </div>
-      <!-- <div class="add-profile">
-        <h4>Add New Employer Profile</h4>
+      <div class="add-profile">
+  <h4>Add New Candidate Profile</h4>
+  <div>
+    <input type="text" v-model="newCandidate.email" placeholder="Email">
+    <input type="text" v-model="newCandidate.first_name" placeholder="First Name">
+    <input type="text" v-model="newCandidate.last_name" placeholder="Last Name">
+    <button class="btn-add" @click="addCandidateProfile">Add</button>
+  </div>
+  <h4>Add New Employer Profile</h4>
         <div>
           <input type="text" v-model="newEmployer.company_name" placeholder="Company Name">
           <input type="text" v-model="newEmployer.first_name" placeholder="First Name">
           <input type="text" v-model="newEmployer.last_name" placeholder="Last Name">
           <button class="btn-add" @click="addEmployerProfile">Add</button>
         </div>
-      </div> -->
+  
+</div>
+
     </section>
   
       <!-- Job Postings Management -->
@@ -121,7 +126,7 @@
   
   <script>
 import { db } from '@/main';
-import { collection, getDocs, addDoc, deleteDoc ,doc} from 'firebase/firestore';
+import { collection, getDocs, addDoc, deleteDoc ,doc, setDoc} from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 export default {
@@ -134,10 +139,14 @@ export default {
       jobPostings: [],
       applications: [],
       auth: null,
-      selectedCandidate: '',
-      selectedEmployer: '',
-      displayedCandidate: {},
-      displayedEmployer: {},
+     // selectedCandidate: '',
+    //  selectedEmployer: '',
+     // displayedCandidate: {},
+    //  displayedEmployer: {},
+     selectedCandidate: null, // Initialize to null
+    displayedCandidate: null, // Initialize to null
+    selectedEmployer: null,
+    displayedEmployer: null,
       newCandidate: {
         email: '',
         first_name: '',
@@ -194,6 +203,8 @@ displayEmployerProfile() {
         candidateProfiles.push(doc.data());
       });
       this.candidateProfiles = candidateProfiles;
+      this.selectedCandidate = null;
+    this.displayedCandidate = null;
     },
     async getEmployerProfiles() {
       const employerProfiles = [];
@@ -203,6 +214,8 @@ displayEmployerProfile() {
         employerProfiles.push(doc.data());
       });
       this.employerProfiles = employerProfiles;
+      this.selectedEmployer= null;
+       this.displayedEmployer= null;
     },
     async getJobPostings() {
       const jobPostings = [];
@@ -222,50 +235,29 @@ displayEmployerProfile() {
       });
       this.applications = applications;
     },
-    async addCandidateProfile() {
-      try {
-        const docRef = await addDoc(collection(db, 'candidate_profiles'), this.newCandidate);
-        this.newCandidate = {
-          email: '',
-          first_name: '',
-          last_name: '',
-        };
-        alert('Candidate profile added successfully!');
-      } catch (error) {
-        alert('Error adding candidate profile: ' + error.message);
-      }
-    },
-    async addEmployerProfile() {
-      try {
-        const docRef = await addDoc(collection(db, 'employer_profiles'), this.newEmployer);
-        this.newEmployer = {
-          company_name: '',
-          first_name: '',
-          last_name: '',
-        };
-        alert('Employer profile added successfully!');
-      } catch (error) {
-        alert('Error adding employer profile: ' + error.message);
-      }
-    },
-    async deleteCandidateProfile(profileId) {
-      try {
-        await deleteDoc(collection(db, 'candidate_profiles'), profileId);
-        alert('Candidate profile deleted successfully!');
-        this.getCandidateProfiles();
-      } catch (error) {
-        alert('Error deleting candidate profile: ' + error.message);
-      }
-    },
-    async deleteEmployerProfile(profileId) {
-      try {
-        await deleteDoc(collection(db, 'employer_profiles'), profileId);
-        alert('Employer profile deleted successfully!');
-        this.getEmployerProfiles();
-      } catch (error) {
-        alert('Error deleting employer profile: ' + error.message);
-      }
-    },
+
+
+
+async addEmployerProfile() {
+  try {
+    // Set the document ID to the employer's company name
+    const docRef = doc(collection(db, 'employer_profiles'), this.newEmployer.company_name);
+
+    // Add the employer profile data to the document
+    await setDoc(docRef, this.newEmployer);
+
+    this.newEmployer = {
+      company_name: '',
+      first_name: '',
+      last_name: '',
+    };
+
+    alert('Employer profile added successfully!');
+  } catch (error) {
+    alert('Error adding employer profile: ' + error.message);
+  }
+},
+    
     async addJobPosting() {
     try {
       const docRef = await addDoc(collection(db, 'job_postings'), this.newJobPosting);
@@ -287,6 +279,54 @@ displayEmployerProfile() {
       alert('Error deleting job posting: ' + error.message);
     }
   },
+  async addCandidateProfile() {
+  try {
+    // Set the document ID to the candidate's email
+    const docRef = doc(collection(db, 'candidate_profiles'), this.newCandidate.email);
+
+    // Add the candidate profile data to the document
+    await setDoc(docRef, this.newCandidate);
+
+    this.newCandidate = {
+      email: '',
+      first_name: '',
+      last_name: '',
+    };
+
+    alert('Candidate profile added successfully!');
+  } catch (error) {
+    alert('Error adding candidate profile: ' + error.message);
+  }
+},
+
+
+  
+
+  async deleteCandidateProfile(profileId) {
+  try {
+    const candidateRef = doc(db, 'candidate_profiles', profileId);
+    await deleteDoc(candidateRef);
+    alert('Candidate profile deleted successfully!');
+    this.getCandidateProfiles(); // Refresh the list after deletion
+  } catch (error) {
+    alert('Error deleting candidate profile: ' + error.message);
+  }
+},
+async deleteEmployerProfile(profileId) {
+  try {
+    const employerRef = doc(db, 'employer_profiles', profileId);
+    await deleteDoc(employerRef);
+    alert('Employer profile deleted successfully!');
+    this.getEmployerProfiles(); // Refresh the list after deletion
+  } catch (error) {
+    alert('Error deleting employer profile: ' + error.message);
+  }
+},
+
+
+
+
+
   },
 };
 </script>
