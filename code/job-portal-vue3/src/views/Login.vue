@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-6">
-          <div class="login-form-container"> <!-- Added the login-form-container -->
+          <div class="login-form-container">
             <h2 class="title h2">Sign in</h2>
             <div class="mb-3">
               <label class="form-label">Email</label>
@@ -23,12 +23,138 @@
             <div class="mb-3 text-center">
               <button class="btn btn-primary" v-on:click="login">Submit</button>
             </div>
+            <div class="mb-3 text-center">
+              <button class="btn btn-google" @click="googleLogin">
+                <i class="fab fa-google"></i> Sign in with Google
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 </template>
+
+<script>
+import { ref } from 'vue';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
+import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
+import router from '../router';
+
+export default {
+  name: 'SignIn',
+  setup() {
+    const email = ref("");
+    const password = ref("");
+    const errMsg = ref("");
+
+    const login = () => {
+      signInWithEmailAndPassword(getAuth(), email.value, password.value)
+        .then(() => {
+          console.log("Successfully signed in!");
+          checkAdminStatus(email.value);
+        })
+        .catch((error) => {
+          console.log(error.code);
+          switch (error.code) {
+            // Handle different error cases
+          }
+        });
+    };
+
+    const googleLogin = async () => {
+      try {
+        const auth = getAuth();
+        const provider = new GoogleAuthProvider();
+
+        await signInWithPopup(auth, provider);
+        
+        checkNewUser();
+      } catch (error) {
+        console.log(error.code);
+        switch (error.code) {
+          // Handle different error cases
+        }
+      }
+    };
+
+    const checkAdminStatus = (email) => {
+      if (email === "adminuser@gmail.com") {
+        router.push('/AdminDashboard');
+      } else {
+        router.push('/');
+      }
+    };
+
+    const getCurrentUser = () => {
+      return new Promise((resolve, reject) => {
+        const removeListener = onAuthStateChanged(
+          getAuth(),
+          (user) => {
+            removeListener();
+            resolve(user);
+          },
+          reject
+        );
+      });
+    };
+
+    const checkNewUser = async () => {
+      const currentUser = await getCurrentUser();
+      if (currentUser) {
+        if (currentUser.providerData.length === 1 && currentUser.providerData[0].providerId === "google.com") {
+          const isNew = await isNewUserInFirestore(currentUser.email);
+          if (isNew) {
+            router.push('/RegisterChoice');
+          } else {
+            checkAdminStatus(currentUser.email);
+          }
+        } else {
+          checkAdminStatus(currentUser.email);
+        }
+      }
+    };
+
+    const isNewUserInFirestore = async (email) => {
+  const db = getFirestore();
+
+  // Check in candidate_profiles
+  const candidateProfilesCollection = collection(db, "candidate_profiles");
+  const candidateQuery = query(candidateProfilesCollection, where("email", "==", email));
+  const candidateQuerySnapshot = await getDocs(candidateQuery);
+  
+  if (!candidateQuerySnapshot.empty) {
+    return false; // User is not new in candidate_profiles
+  }
+
+  // Check in employer_profiles
+  const employerProfilesCollection = collection(db, "employer_profiles");
+  const employerQuery = query(employerProfilesCollection, where("email", "==", email));
+  const employerQuerySnapshot = await getDocs(employerQuery);
+  
+  if (!employerQuerySnapshot.empty) {
+    return false; // User is not new in employer_profiles
+  }
+
+  // If the email is not found in candidate_profiles or employer_profiles, then it's a new user
+  return true;
+};
+
+
+
+    checkNewUser();
+
+    return { email, password, errMsg, login, googleLogin };
+  }
+};
+</script>
+
+
+
+
+
 
 <style scoped>
 /* Old Working Custom Styles */
@@ -105,60 +231,3 @@
 </style>
 
 
-<script>
-import { ref } from 'vue';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import router from '../router';
-
-export default {
-  name: 'SignIn',
-  setup() {
-    const email = ref("");
-    const password = ref("");
-    const errMsg = ref("");
-
-    const login = () => {
-      signInWithEmailAndPassword(getAuth(), email.value, password.value)
-        .then((data) => {
-          console.log("Successfully signed in!");
-          // After successful login, check if the user is an admin
-          checkAdminStatus(email.value);
-        })
-        .catch((error) => {
-          console.log(error.code);
-          switch (error.code) {
-            case "auth/invalid-email":
-              errMsg.value = "Invalid email";
-              break;
-
-            case "auth/user-not-found":
-              errMsg.value = "No account with that email was found";
-              break;
-
-            case "auth/wrong-password":
-              errMsg.value = "Incorrect password";
-              break;
-
-            default:
-              errMsg.value = "Email or password was incorrect";
-              break;
-          }
-        });
-    };
-
-    const checkAdminStatus = (email) => {
-      // You may need to fetch the admin_profiles collection here and check if the user's email is in the list of admins
-      // For simplicity, let's assume the admin email is "admin@example.com"
-      if (email === "adminuser@gmail.com") {
-        // Grant admin access and navigate to the admin dashboard
-        router.push('/AdminDashboard');
-      } else {
-        // For non-admin users, navigate to the regular user dashboard
-        router.push('/');
-      }
-    };
-
-    return { email, password, errMsg, login };
-  }
-};
-</script>
