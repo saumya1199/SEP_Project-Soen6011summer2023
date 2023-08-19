@@ -137,6 +137,7 @@ export default {
   if (!employerQuerySnapshot.empty) {
     return false; // User is not new in employer_profiles
   }
+//
 
   // If the email is not found in candidate_profiles or employer_profiles, then it's a new user
   return true;
